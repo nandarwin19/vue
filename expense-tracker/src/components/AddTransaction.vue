@@ -1,6 +1,6 @@
 <template>
   <h3>Add new transaction</h3>
-  <form id="form">
+  <form id="form" @submit.prevent="onSubmit">
     <div class="form-control">
       <label for="text">Text</label>
       <input type="text" id="text" placeholder="Enter text..." v-model="text" />
@@ -18,7 +18,30 @@
 
 <script setup>
 import { ref } from 'vue'
+import { useToast } from 'vue-toast-notification'
 
 const text = ref('')
 const amount = ref('')
+
+const toast = useToast()
+
+const emit = defineEmits(['addTransaction'])
+
+const onSubmit = () => {
+  // console.log('hi', text.value, amount.value)
+  if (!text.value || !amount.value) {
+    toast.error('Please fill both field!')
+    return
+  }
+
+  const transactionData = {
+    text: text.value,
+    amount: parseFloat(amount.value)
+  }
+
+  emit('addTransaction', transactionData)
+
+  text.value = ''
+  amount.value = ''
+}
 </script>
