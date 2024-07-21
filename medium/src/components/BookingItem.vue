@@ -4,13 +4,13 @@
     <p class="p-4 border-b border-gray-200">{{ when }}</p>
     <p class="p-4">{{ description }}</p>
     <section class="flex justify-end p-4">
-      <RoundButton @click="$emit('register')"> Register </RoundButton>
+      <RoundedCard @click="$emit('register')"> Register </RoundedCard>
     </section>
   </div>
 </template>
 
 <script setup>
-import RoundButton from './RoundButton.vue'
+import RoundedCard from './RoundedCard.vue'
 defineProps({
   title: String,
   when: String,

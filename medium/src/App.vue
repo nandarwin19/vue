@@ -1,5 +1,6 @@
 <script setup>
-import EventCard from '@/components/EventCard.vue'
+import { eventCards } from '../constants'
+import BookingItem from './components/BookingItem.vue'
 </script>
 
 <template>
@@ -9,12 +10,12 @@ import EventCard from '@/components/EventCard.vue'
 
     <section class="grid grid-cols-2 gap-8">
       <!-- <EventCard v-for="i in 8" :key="i" /> -->
-      <EventCard
-        v-for="i in 8"
-        :key="i"
-        title="Vue Conference 2024"
-        when="2024-05-01"
-        description="Conference about Vue and JavaScript"
+      <BookingItem
+        v-for="eventCard in eventCards"
+        :key="eventCard.id"
+        :title="eventCard.title"
+        :when="eventCard.when"
+        :description="eventCard.description"
       />
     </section>
     <h2 class="text-2xl font-medium">Your Bookings</h2>
