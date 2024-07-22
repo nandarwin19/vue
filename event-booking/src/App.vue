@@ -1,27 +1,11 @@
 <script setup>
-import EventCard from '@/components/EventCard.vue'
+import EventList from '@/components/EventList.vue'
 import BookingItem from '@/components/BookingItem.vue'
-import LoadingEventCard from '@/components/LoadingEventCard.vue'
 import LoadingBookCard from '@/components/LoadingBookCard.vue'
 import { onMounted, ref } from 'vue'
 
-const events = ref([])
-const eventsLoading = ref(false)
 const books = ref([])
 const booksLoading = ref(false)
-
-// fetch events
-
-const fetchEvents = async () => {
-  eventsLoading.value = true
-  try {
-    const res = await fetch('http://localhost:3001/events')
-    events.value = await res.json()
-    // console.log(events.value)
-  } finally {
-    eventsLoading.value = false
-  }
-}
 
 const fetchBooks = async () => {
   booksLoading.value = true
@@ -91,7 +75,7 @@ const cancelBooking = async (bookingId) => {
 }
 
 onMounted(() => {
-  fetchEvents(), fetchBooks()
+  fetchBooks()
 })
 </script>
 
@@ -100,22 +84,7 @@ onMounted(() => {
     <h1 class="text-4xl font-medium">Event Booking App</h1>
     <h2 class="text-2xl font-medium">All Events</h2>
 
-    <section class="grid grid-cols-2 gap-8">
-      <!-- <EventCard v-for="i in 8" :key="i" /> -->
-      <template v-if="!eventsLoading">
-        <EventCard
-          v-for="event in events"
-          :key="event.id"
-          :title="event.title"
-          :when="event.date"
-          :description="event.description"
-          @register="handleRegister(event)"
-        />
-      </template>
-      <template v-else>
-        <LoadingEventCard v-for="i in 4" :key="i" />
-      </template>
-    </section>
+    <EventList @register="handleRegister($event)" />
 
     <h2 class="text-2xl font-medium">Your Bookings</h2>
     <section class="grid grid-cols-1 gap-4">
@@ -125,7 +94,7 @@ onMounted(() => {
           :key="book.id"
           :status="book.status"
           :title="book.eventTitle"
-          @cancelled="cancelBooking(BookingItem.id)"
+          @cancelled="cancelBooking(book.id)"
         />
       </template>
       <template v-else>
